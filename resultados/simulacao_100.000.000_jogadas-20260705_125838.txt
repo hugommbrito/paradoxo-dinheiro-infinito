@@ -1,0 +1,123 @@
+
+==================================================
+RESULTADO FINAL DA SIMULAÇÃO
+==================================================
+Jogadas simuladas ........: 100.000.000
+Prêmio médio .............: R$ 17,65
+Maior prêmio .............: R$ 536.870.912
+Menor prêmio .............: R$ 1
+Média de rodadas/jogada ..: 2,00
+Total de caras ...........: 100.007.834
+Total de coroas ..........: 100.000.000
+==================================================
+==================================================
+DISTRIBUIÇÃO DE RODADAS POR JOGADA
+    1 rodada(s) : 50.000.411 vez(s) || Prêmio: R$ 1
+    2 rodada(s) : 24.996.492 vez(s) || Prêmio: R$ 2
+    3 rodada(s) : 12.502.125 vez(s) || Prêmio: R$ 4
+    4 rodada(s) : 6.250.161 vez(s) || Prêmio: R$ 8
+    5 rodada(s) : 3.125.045 vez(s) || Prêmio: R$ 16
+    6 rodada(s) : 1.562.369 vez(s) || Prêmio: R$ 32
+    7 rodada(s) : 781.222 vez(s) || Prêmio: R$ 64
+    8 rodada(s) : 391.580 vez(s) || Prêmio: R$ 128
+    9 rodada(s) : 195.173 vez(s) || Prêmio: R$ 256
+   10 rodada(s) : 97.346 vez(s) || Prêmio: R$ 512
+   11 rodada(s) : 49.116 vez(s) || Prêmio: R$ 1.024
+   12 rodada(s) : 24.486 vez(s) || Prêmio: R$ 2.048
+   13 rodada(s) : 12.223 vez(s) || Prêmio: R$ 4.096
+   14 rodada(s) :  6.076 vez(s) || Prêmio: R$ 8.192
+   15 rodada(s) :  3.113 vez(s) || Prêmio: R$ 16.384
+   16 rodada(s) :  1.536 vez(s) || Prêmio: R$ 32.768
+   17 rodada(s) :    773 vez(s) || Prêmio: R$ 65.536
+   18 rodada(s) :    376 vez(s) || Prêmio: R$ 131.072
+   19 rodada(s) :    188 vez(s) || Prêmio: R$ 262.144
+   20 rodada(s) :     95 vez(s) || Prêmio: R$ 524.288
+   21 rodada(s) :     55 vez(s) || Prêmio: R$ 1.048.576
+   22 rodada(s) :     23 vez(s) || Prêmio: R$ 2.097.152
+   23 rodada(s) :      7 vez(s) || Prêmio: R$ 4.194.304
+   24 rodada(s) :      5 vez(s) || Prêmio: R$ 8.388.608
+   25 rodada(s) :      3 vez(s) || Prêmio: R$ 16.777.216
+   30 rodada(s) :      1 vez(s) || Prêmio: R$ 536.870.912
+==================================================
+RESULTADO POR PREÇO DE ENTRADA
+Resultado Acc = Resultado acumulado após jogar todas as 100.000.000 vezes
+Chances de saída => Em quantas jogadas saiu com lucro
+  Entrada R$   5 ..: resultado acumulado R$ 1.264.987.487,00 (LUCRO) || ficou positivo 11x
+  Entrada R$  10 ..: resultado acumulado R$ 764.987.487,00 (LUCRO) || ficou positivo 38x
+  Entrada R$  15 ..: resultado acumulado R$ 264.987.487,00 (LUCRO) || ficou positivo 2x
+  Entrada R$  20 ..: resultado acumulado R$ -235.012.513,00 (PREJUÍZO) || ficou positivo 6x
+  Entrada R$  25 ..: resultado acumulado R$ -735.012.513,00 (PREJUÍZO) || ficou positivo 0x
+  Entrada R$  30 ..: resultado acumulado R$ -1.235.012.513,00 (PREJUÍZO) || ficou positivo 0x
+  Entrada R$  35 ..: resultado acumulado R$ -1.735.012.513,00 (PREJUÍZO) || ficou positivo 0x
+  Entrada R$  40 ..: resultado acumulado R$ -2.235.012.513,00 (PREJUÍZO) || ficou positivo 0x
+  Entrada R$  45 ..: resultado acumulado R$ -2.735.012.513,00 (PREJUÍZO) || ficou positivo 0x
+  Entrada R$  50 ..: resultado acumulado R$ -3.235.012.513,00 (PREJUÍZO) || ficou positivo 0x
+==================================================
+
+
+==================================================
+  Entrada R$  5,00 parou com lucro em nos seguintes pontos:
+Jogada: 1 | Rodadas: 4 | Lucro: R$ 3
+Jogada: 6 | Rodadas: 6 | Lucro: R$ 16
+Jogada: 13 | Rodadas: 9 | Lucro: R$ 249
+Jogada: 174 | Rodadas: 5 | Lucro: R$ 10
+Jogada: 186 | Rodadas: 8 | Lucro: R$ 107
+Jogada: 248 | Rodadas: 6 | Lucro: R$ 25
+Jogada: 286 | Rodadas: 7 | Lucro: R$ 10
+Jogada: 386 | Rodadas: 6 | Lucro: R$ 6
+Jogada: 410 | Rodadas: 9 | Lucro: R$ 207
+Jogada: 1006 | Rodadas: 8 | Lucro: R$ 116
+Jogada: 1444 | Rodadas: 11 | Lucro: R$ 583
+==================================================
+  Entrada R$ 10,00 parou com lucro em nos seguintes pontos:
+Jogada: 13 | Rodadas: 9 | Lucro: R$ 184
+Jogada: 1780 | Rodadas: 14 | Lucro: R$ 111
+Jogada: 1804 | Rodadas: 7 | Lucro: R$ 8
+Jogada: 2336 | Rodadas: 13 | Lucro: R$ 1.663
+Jogada: 279575 | Rodadas: 18 | Lucro: R$ 42.934
+Jogada: 294731 | Rodadas: 7 | Lucro: R$ 21
+Jogada: 301739 | Rodadas: 17 | Lucro: R$ 44.287
+Jogada: 320631 | Rodadas: 9 | Lucro: R$ 226
+Jogada: 382842 | Rodadas: 19 | Lucro: R$ 134.161
+Jogada: 456752 | Rodadas: 18 | Lucro: R$ 105.994
+Jogada: 506735 | Rodadas: 16 | Lucro: R$ 2.362
+Jogada: 512241 | Rodadas: 7 | Lucro: R$ 1
+Jogada: 512250 | Rodadas: 8 | Lucro: R$ 58
+Jogada: 516921 | Rodadas: 16 | Lucro: R$ 12.003
+Jogada: 521845 | Rodadas: 8 | Lucro: R$ 48
+Jogada: 521857 | Rodadas: 12 | Lucro: R$ 1.998
+Jogada: 601699 | Rodadas: 20 | Lucro: R$ 312.581
+Jogada: 758955 | Rodadas: 11 | Lucro: R$ 533
+Jogada: 762029 | Rodadas: 17 | Lucro: R$ 51.660
+Jogada: 776683 | Rodadas: 7 | Lucro: R$ 34
+Jogada: 776729 | Rodadas: 11 | Lucro: R$ 712
+Jogada: 777827 | Rodadas: 13 | Lucro: R$ 1.536
+Jogada: 779265 | Rodadas: 14 | Lucro: R$ 4.096
+Jogada: 780129 | Rodadas: 15 | Lucro: R$ 15.698
+Jogada: 784190 | Rodadas: 12 | Lucro: R$ 1.027
+Jogada: 784778 | Rodadas: 13 | Lucro: R$ 1.821
+Jogada: 785128 | Rodadas: 7 | Lucro: R$ 43
+Jogada: 785201 | Rodadas: 10 | Lucro: R$ 370
+Jogada: 791280 | Rodadas: 16 | Lucro: R$ 7.346
+Jogada: 797509 | Rodadas: 15 | Lucro: R$ 7.926
+Jogada: 814803 | Rodadas: 16 | Lucro: R$ 3.609
+Jogada: 834875 | Rodadas: 16 | Lucro: R$ 4.136
+Jogada: 835871 | Rodadas: 6 | Lucro: R$ 11
+Jogada: 836067 | Rodadas: 13 | Lucro: R$ 3.080
+Jogada: 886588 | Rodadas: 19 | Lucro: R$ 180.820
+Jogada: 1040414 | Rodadas: 6 | Lucro: R$ 2
+Jogada: 1040417 | Rodadas: 5 | Lucro: R$ 6
+Jogada: 1446328 | Rodadas: 21 | Lucro: R$ 835.987
+==================================================
+  Entrada R$ 15,00 parou com lucro em nos seguintes pontos:
+Jogada: 13 | Rodadas: 9 | Lucro: R$ 119
+Jogada: 61331004 | Rodadas: 30 | Lucro: R$ 363.957.811
+==================================================
+  Entrada R$ 20,00 parou com lucro em nos seguintes pontos:
+Jogada: 13 | Rodadas: 9 | Lucro: R$ 54
+Jogada: 61331004 | Rodadas: 30 | Lucro: R$ 57.302.791
+Jogada: 67720206 | Rodadas: 18 | Lucro: R$ 60.564
+Jogada: 67729332 | Rodadas: 9 | Lucro: R$ 184
+Jogada: 67733078 | Rodadas: 18 | Lucro: R$ 93.707
+Jogada: 67843027 | Rodadas: 20 | Lucro: R$ 317.579
+==================================================

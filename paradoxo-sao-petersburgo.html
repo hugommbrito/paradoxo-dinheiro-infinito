@@ -1,0 +1,1114 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paradoxo de São Petersburgo</title>
+<style>*, *::before, *::after { box-sizing: border-box; } body { margin: 0; }</style>
+</head>
+<body>
+<style>
+  :root {
+    --page: #f9f9f7;
+    --surface: #fcfcfb;
+    --ink: #0b0b0b;
+    --ink2: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --axis: #c3c2b7;
+    --border: rgba(11, 11, 11, 0.10);
+    --blue: #2a78d6;
+    --red: #e34948;
+    --wash: rgba(42, 120, 214, 0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page: #0d0d0d;
+      --surface: #1a1a19;
+      --ink: #ffffff;
+      --ink2: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --axis: #383835;
+      --border: rgba(255, 255, 255, 0.10);
+      --blue: #3987e5;
+      --red: #e66767;
+      --wash: rgba(57, 135, 229, 0.12);
+    }
+  }
+  :root[data-theme="dark"] {
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --ink: #ffffff;
+    --ink2: #c3c2b7;
+    --muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10);
+    --blue: #3987e5;
+    --red: #e66767;
+    --wash: rgba(57, 135, 229, 0.12);
+  }
+  :root[data-theme="light"] {
+    --page: #f9f9f7;
+    --surface: #fcfcfb;
+    --ink: #0b0b0b;
+    --ink2: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --axis: #c3c2b7;
+    --border: rgba(11, 11, 11, 0.10);
+    --blue: #2a78d6;
+    --red: #e34948;
+    --wash: rgba(42, 120, 214, 0.08);
+  }
+
+  body { background: var(--page); }
+
+  .page {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--ink);
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 44px 20px 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead { margin-bottom: 16px; }
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-size: clamp(26px, 4.5vw, 34px);
+    font-weight: 650;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+  .lede {
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--ink2);
+    max-width: 66ch;
+    margin: 0;
+  }
+  .lede strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- cards ---------- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+  }
+
+  .thesis {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 720px) { .thesis { grid-template-columns: 1fr; } }
+
+  .tile-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 8px;
+  }
+  .hero-value {
+    font-size: clamp(42px, 6vw, 56px);
+    font-weight: 650;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+  }
+  .tile-note { font-size: 13px; line-height: 1.5; color: var(--ink2); margin: 0; }
+  .formula {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13.5px;
+    color: var(--ink2);
+    background: var(--wash);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: 0;
+    display: inline-block;
+  }
+
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+    gap: 16px;
+  }
+  .kpi .value {
+    font-size: 26px;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+  }
+  .kpi .tile-note { font-size: 12.5px; color: var(--muted); }
+
+  /* ---------- chart cards ---------- */
+  .chart-card { margin: 0; }
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 6px;
+  }
+  .card-head h2 {
+    font-size: 16px;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+  }
+  .card-head .sub {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink2);
+    margin: 0;
+    max-width: 62ch;
+  }
+  .toggle {
+    flex: none;
+    font: 500 12.5px system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--ink2);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  .toggle:hover { background: var(--wash); color: var(--ink); }
+  .toggle:focus-visible, .plot-wrap:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    padding: 6px 0 2px;
+    font-size: 12.5px;
+    color: var(--ink2);
+  }
+  .legend .item { display: inline-flex; align-items: center; gap: 7px; }
+  .key-line { width: 16px; height: 0; border-top: 2.5px solid; border-radius: 2px; }
+  .key-dot { width: 9px; height: 9px; border-radius: 50%; }
+  .key-rect { width: 10px; height: 10px; border-radius: 3px; }
+  .k-blue { border-color: var(--blue); background: var(--blue); }
+  .k-red { border-color: var(--red); background: var(--red); }
+  .k-ghost { border-color: var(--muted); background: var(--muted); opacity: 0.65; }
+
+  .plot-wrap { position: relative; }
+  .plot-wrap[hidden] { display: none; }
+  .plot svg { display: block; width: 100%; height: auto; }
+
+  /* ---------- svg vocabulary ---------- */
+  .gridline { stroke: var(--grid); stroke-width: 1; }
+  .axisline { stroke: var(--axis); stroke-width: 1; }
+  .ticklab {
+    fill: var(--muted);
+    font: 11px system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+  .axistitle {
+    fill: var(--muted);
+    font: 600 10.5px system-ui, -apple-system, "Segoe UI", sans-serif;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .dlab { fill: var(--ink2); font: 600 12px system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .dlab-soft { fill: var(--muted); font: 11.5px system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .theo-line { fill: none; stroke: var(--muted); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; opacity: 0.8; }
+  .marker { fill: var(--blue); stroke: var(--surface); stroke-width: 2; }
+  .bar-pos { fill: var(--blue); }
+  .bar-neg { fill: var(--red); }
+  .hot .barfill { filter: brightness(1.12); }
+  .crosshair { stroke: var(--axis); stroke-width: 1; }
+  .refline { stroke: var(--ink2); stroke-width: 1; }
+  .hitzone { fill: transparent; }
+
+  /* ---------- tooltip ---------- */
+  .tip {
+    position: absolute;
+    z-index: 3;
+    pointer-events: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+    padding: 9px 12px;
+    min-width: 150px;
+    max-width: 260px;
+  }
+  .tip[hidden] { display: none; }
+  .tip .tip-title {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+  .tip .row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--ink2);
+    padding: 1.5px 0;
+  }
+  .tip .row .lk {
+    flex: none;
+    width: 12px;
+    height: 0;
+    border-top: 2.5px solid var(--muted);
+    border-radius: 2px;
+    align-self: center;
+  }
+  .tip .row .lk.lk-blue { border-color: var(--blue); }
+  .tip .row .lk.lk-red { border-color: var(--red); }
+  .tip .row .lbl { flex: 1 1 auto; }
+  .tip .row .val {
+    font-weight: 650;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  /* ---------- table view ---------- */
+  .tablewrap {
+    max-height: 400px;
+    overflow: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .tablewrap[hidden] { display: none; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    font-variant-numeric: tabular-nums;
+  }
+  th {
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: right;
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--grid);
+    white-space: nowrap;
+  }
+  td {
+    color: var(--ink2);
+    text-align: right;
+    padding: 7px 14px;
+    border-bottom: 1px solid var(--grid);
+    white-space: nowrap;
+  }
+  th:first-child, td:first-child, th.tl, td.tl { text-align: left; }
+  td:first-child { color: var(--ink); font-weight: 500; }
+  td.tl { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; }
+  td.tl:first-child { font-family: inherit; font-size: inherit; }
+  tr:last-child td { border-bottom: none; }
+  .sub code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.94em; }
+
+  .capnote {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 12px 0 0;
+    max-width: 78ch;
+  }
+
+  .prov {
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--muted);
+    border-top: 1px solid var(--grid);
+    padding-top: 16px;
+    margin-top: 8px;
+  }
+  .prov code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 11.5px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .toggle { transition: background 140ms ease; }
+    .barfill { transition: filter 120ms ease; }
+  }
+</style>
+
+<div class="page" lang="pt-BR">
+  <header class="masthead">
+    <p class="eyebrow">Paradoxo de São Petersburgo · Simulação de Monte Carlo</p>
+    <h1>O paradoxo do dinheiro infinito</h1>
+    <p class="lede">
+      Uma moeda honesta é lançada até sair coroa. O prêmio começa em <strong>R$&nbsp;1</strong> e
+      <strong>dobra a cada cara</strong> consecutiva. A teoria diz que o valor esperado do prêmio é
+      infinito — então por que ninguém pagaria R$&nbsp;50 para jogar?
+      <strong>500 milhões de jogadas simuladas</strong> mostram o porquê.
+    </p>
+  </header>
+
+  <section class="thesis" aria-label="Resumo do paradoxo">
+    <div class="card">
+      <p class="tile-label">Prêmio médio observado</p>
+      <p class="hero-value" id="hero-mean">—</p>
+      <p class="tile-note" id="hero-mean-note">em 500 milhões de jogadas</p>
+    </div>
+    <div class="card">
+      <p class="tile-label">Valor esperado teórico</p>
+      <p class="hero-value">∞</p>
+      <p class="formula">E = ½·1 + ¼·2 + ⅛·4 + … → ∞</p>
+    </div>
+  </section>
+
+  <section class="kpis" aria-label="Indicadores" id="kpis"></section>
+
+  <figure class="card chart-card" id="card-dist">
+    <div class="card-head">
+      <div>
+        <h2>A maioria das jogadas paga quase nada</h2>
+        <p class="sub">
+          Jogadas encerradas em cada rodada, nas 500 milhões simuladas — escala logarítmica.
+          A cada rodada extra, metade das jogadas sobrevive e o prêmio dobra.
+        </p>
+      </div>
+      <button class="toggle" type="button" aria-pressed="false">Ver tabela</button>
+    </div>
+    <div class="legend">
+      <span class="item"><span class="key-dot k-blue"></span><span>observado</span></span>
+      <span class="item"><span class="key-line k-ghost"></span><span>teórico: n/2<sup>k</sup></span></span>
+    </div>
+    <div class="plot-wrap" tabindex="0" role="img"
+      aria-label="Gráfico de dispersão em escala logarítmica: número de jogadas encerradas em cada rodada, de 1 a 30, caindo pela metade a cada rodada — de 250 milhões na rodada 1 até 1 jogada na rodada 30. Os pontos observados seguem de perto a linha teórica n sobre 2 elevado a k. Dados completos na tabela.">
+      <div class="plot"></div>
+      <div class="tip" hidden></div>
+    </div>
+    <div class="tablewrap" hidden></div>
+    <figcaption class="capnote" id="cap-dist"></figcaption>
+  </figure>
+
+  <figure class="card chart-card" id="card-runs">
+    <div class="card-head">
+      <div>
+        <h2>Cinco execuções, cinco médias</h2>
+        <p class="sub">
+          Prêmio médio final de cada uma das 5 execuções de 100 milhões de jogadas — um ponto por
+          arquivo da pasta <code class="mono">resultados/</code>. Mesmo com amostras desse tamanho,
+          as médias terminam separadas por quase R$&nbsp;5.
+        </p>
+      </div>
+      <button class="toggle" type="button" aria-pressed="false">Ver tabela</button>
+    </div>
+    <div class="plot-wrap" tabindex="0" role="img"
+      aria-label="Gráfico de pontos: prêmio médio final de cada uma das cinco execuções de 100 milhões de jogadas, entre R$ 12,76 e R$ 17,65, com a média combinada de R$ 14,89 marcada. As duas execuções com médias acima de R$ 16 são as que viram os maiores prêmios, de R$ 268,4 milhões e R$ 536,9 milhões. Dados completos e nomes dos arquivos na tabela.">
+      <div class="plot"></div>
+      <div class="tip" hidden></div>
+    </div>
+    <div class="tablewrap" hidden></div>
+    <figcaption class="capnote" id="cap-runs"></figcaption>
+  </figure>
+
+  <figure class="card chart-card" id="card-entry">
+    <div class="card-head">
+      <div>
+        <h2>Quanto vale pagar para jogar?</h2>
+        <p class="sub">
+          Resultado médio por jogada para cada preço de entrada, nas 500 milhões de jogadas.
+          O ponto de equilíbrio empírico ficou em R$&nbsp;14,89 — abaixo disso houve lucro; acima, prejuízo.
+        </p>
+      </div>
+      <button class="toggle" type="button" aria-pressed="false">Ver tabela</button>
+    </div>
+    <div class="legend">
+      <span class="item"><span class="key-rect k-blue"></span>saldo positivo</span>
+      <span class="item"><span class="key-rect k-red"></span>saldo negativo</span>
+    </div>
+    <div class="plot-wrap" tabindex="0" role="img"
+      aria-label="Gráfico de barras divergentes: resultado médio por jogada para preços de entrada de R$ 5 a R$ 50. Positivo em R$ 5 e R$ 10; negativo de R$ 15 em diante, chegando a menos R$ 35,11 com entrada de R$ 50. O equilíbrio fica em R$ 14,89. Dados completos na tabela.">
+      <div class="plot"></div>
+      <div class="tip" hidden></div>
+    </div>
+    <div class="tablewrap" hidden></div>
+    <figcaption class="capnote" id="cap-entry"></figcaption>
+  </figure>
+
+  <figure class="card chart-card" id="card-exits">
+    <div class="card-head">
+      <div>
+        <h2>Quando dá para sair no lucro?</h2>
+        <p class="sub">
+          Cada ponto é um momento em que o saldo acumulado cruzou para o positivo — uma chance real
+          de parar de jogar no azul — somando as 5 execuções, por preço de entrada. São os pontos
+          de "parou com lucro" listados em cada arquivo.
+        </p>
+      </div>
+      <button class="toggle" type="button" aria-pressed="false">Ver tabela</button>
+    </div>
+    <div class="plot-wrap" tabindex="0" role="img"
+      aria-label="Gráfico de dispersão em escala logarítmica: para cada preço de entrada de R$ 5 a R$ 50, os momentos em que o saldo acumulado ficou positivo ao longo de 100 milhões de jogadas, nas 5 execuções somadas. Entradas baratas saem no lucro cedo e com frequência; a R$ 45 há uma única chance em 500 milhões de jogadas e a R$ 50, nenhuma. Estatísticas completas na tabela.">
+      <div class="plot"></div>
+      <div class="tip" hidden></div>
+    </div>
+    <div class="tablewrap" hidden></div>
+    <figcaption class="capnote" id="cap-exits"></figcaption>
+  </figure>
+
+  <footer class="prov" id="prov"></footer>
+</div>
+
+<script>
+"use strict";
+const DATA = {"dist":[{"rounds":1,"count":250013721,"prize":1},{"rounds":2,"count":124978273,"prize":2},{"rounds":3,"count":62503900,"prize":4},{"rounds":4,"count":31255332,"prize":8},{"rounds":5,"count":15624016,"prize":16},{"rounds":6,"count":7811910,"prize":32},{"rounds":7,"count":3905882,"prize":64},{"rounds":8,"count":1954158,"prize":128},{"rounds":9,"count":976739,"prize":256},{"rounds":10,"count":487011,"prize":512},{"rounds":11,"count":244791,"prize":1024},{"rounds":12,"count":122265,"prize":2048},{"rounds":13,"count":61060,"prize":4096},{"rounds":14,"count":30352,"prize":8192},{"rounds":15,"count":15299,"prize":16384},{"rounds":16,"count":7643,"prize":32768},{"rounds":17,"count":3838,"prize":65536},{"rounds":18,"count":1895,"prize":131072},{"rounds":19,"count":977,"prize":262144},{"rounds":20,"count":484,"prize":524288},{"rounds":21,"count":230,"prize":1048576},{"rounds":22,"count":113,"prize":2097152},{"rounds":23,"count":62,"prize":4194304},{"rounds":24,"count":28,"prize":8388608},{"rounds":25,"count":13,"prize":16777216},{"rounds":26,"count":3,"prize":33554432},{"rounds":27,"count":1,"prize":67108864},{"rounds":28,"count":2,"prize":134217728},{"rounds":29,"count":1,"prize":268435456},{"rounds":30,"count":1,"prize":536870912}],"entries":[{"price":5,"acc":4942887083,"positivo":34},{"price":10,"acc":2442887083,"positivo":49},{"price":15,"acc":-57112917,"positivo":42},{"price":20,"acc":-2557112917,"positivo":25},{"price":25,"acc":-5057112917,"positivo":11},{"price":30,"acc":-7557112917,"positivo":3},{"price":35,"acc":-10057112917,"positivo":2},{"price":40,"acc":-12557112917,"positivo":2},{"price":45,"acc":-15057112917,"positivo":1},{"price":50,"acc":-17557112917,"positivo":0}],"runs":[{"file":"simulacao_100.000.000_jogadas-20260705_125547.txt","ts":"20260705_125547","games":100000000,"totalPrize":1275506706,"maxRounds":25,"maxPrize":16777216,"heads":99991750,"tails":100000000},{"file":"simulacao_100.000.000_jogadas-20260705_125812.txt","ts":"20260705_125812","games":100000000,"totalPrize":1336558329,"maxRounds":26,"maxPrize":33554432,"heads":100012857,"tails":100000000},{"file":"simulacao_100.000.000_jogadas-20260705_125827.txt","ts":"20260705_125827","games":100000000,"totalPrize":1684028004,"maxRounds":29,"maxPrize":268435456,"heads":100003957,"tails":100000000},{"file":"simulacao_100.000.000_jogadas-20260705_125835.txt","ts":"20260705_125835","games":100000000,"totalPrize":1381806557,"maxRounds":28,"maxPrize":134217728,"heads":99981556,"tails":100000000},{"file":"simulacao_100.000.000_jogadas-20260705_125838.txt","ts":"20260705_125838","games":100000000,"totalPrize":1764987487,"maxRounds":30,"maxPrize":536870912,"heads":100007834,"tails":100000000}],"exits":[{"price":5,"points":[[1,7,6,15],[1,60,9,152],[1,165,4,1],[1,193,8,41],[1,404,5,3],[1,505,8,93],[1,546,4,3],[1,598,7,8],[1,1241,10,142],[1,1440,9,93],[1,1651,6,3],[1,1733,8,63],[1,2988,5,5],[1,3034,9,161],[2,1,6,27],[2,165,11,866],[3,28,8,63],[3,66,5,2],[3,93,8,47],[3,112,6,27],[3,339,8,24],[3,379,10,453],[4,422,11,610],[5,1,4,3],[5,6,6,16],[5,13,9,249],[5,174,5,10],[5,186,8,107],[5,248,6,25],[5,286,7,10],[5,386,6,6],[5,410,9,207],[5,1006,8,116],[5,1444,11,583]]},{"price":10,"points":[[1,257634,22,1475866],[2,1,6,22],[2,165,11,41],[2,678360,24,7883663],[3,1970,15,11661],[3,6548,14,6206],[4,10280,18,109982],[4,61911,8,110],[4,62079,11,42],[4,62183,10,47],[4,85519,21,984896],[5,13,9,184],[5,1780,14,111],[5,1804,7,8],[5,2336,13,1663],[5,279575,18,42934],[5,294731,7,21],[5,301739,17,44287],[5,320631,9,226],[5,382842,19,134161],[5,456752,18,105994],[5,506735,16,2362],[5,512241,7,1],[5,512250,8,58],[5,516921,16,12003],[5,521845,8,48],[5,521857,12,1998],[5,601699,20,312581],[5,758955,11,533],[5,762029,17,51660],[5,776683,7,34],[5,776729,11,712],[5,777827,13,1536],[5,779265,14,4096],[5,780129,15,15698],[5,784190,12,1027],[5,784778,13,1821],[5,785128,7,43],[5,785201,10,370],[5,791280,16,7346],[5,797509,15,7926],[5,814803,16,3609],[5,834875,16,4136],[5,835871,6,11],[5,836067,13,3080],[5,886588,19,180820],[5,1040414,6,2],[5,1040417,5,6],[5,1446328,21,835987]]},{"price":15,"points":[[1,257634,22,187696],[1,282361,7,49],[1,284980,15,664],[1,285041,7,16],[1,285222,12,314],[1,4142008,25,1331866],[1,4360494,7,28],[1,4540262,23,3386671],[1,5132578,7,19],[1,5132583,7,13],[1,5132587,9,214],[1,5140111,18,70462],[1,5149341,17,57353],[1,5444204,23,2614989],[1,5845120,8,72],[1,7563371,25,9063834],[1,9938246,8,45],[1,9938262,10,361],[2,1,6,17],[2,678360,24,4491863],[2,3074641,16,3506],[3,1970,15,1811],[3,2233,13,3046],[3,2513,6,7],[3,7368,19,229167],[3,2085742,25,8700928],[3,3894906,19,96389],[3,4070725,21,82255],[3,4084224,12,706],[3,4084710,9,193],[3,4086048,16,20793],[3,4088557,14,4509],[3,4119756,19,42],[3,4119761,6,17],[3,19718293,28,80198644],[3,72972037,15,14255],[3,90250124,29,219420909],[4,10280,18,58582],[4,85519,21,557301],[4,5267857,28,115121808],[5,13,9,119],[5,61331004,30,363957811]]},{"price":20,"points":[[2,1,6,12],[2,678360,24,1100063],[2,774767,19,259644],[2,964511,23,2245636],[2,1367573,9,72],[3,7368,19,192327],[3,26361,10,255],[3,19999317,26,11876577],[3,21660136,13,2820],[3,21664710,20,475860],[3,21708110,19,209497],[3,21725609,15,2044],[3,21800677,22,1184730],[3,21899135,14,691],[3,21901084,17,41082],[4,10280,18,7182],[4,85519,21,129706],[4,5267857,28,88782523],[4,22620805,15,1469],[5,13,9,54],[5,61331004,30,57302791],[5,67720206,18,60564],[5,67729332,9,184],[5,67733078,18,93707],[5,67843027,20,317579]]},{"price":25,"points":[[2,1,6,7],[3,7368,19,155487],[3,17392,15,465],[4,5267857,28,62443238],[4,9510398,18,31827],[4,9515167,20,480022],[4,14322463,27,5856954],[4,14770643,16,11180],[4,14771183,8,58],[4,14771442,15,11907],[4,14785786,20,285935]]},{"price":30,"points":[[2,1,6,2],[3,7368,19,118647],[4,5267857,28,36103953]]},{"price":35,"points":[[3,7368,19,81807],[4,5267857,28,9764668]]},{"price":40,"points":[[3,7368,19,44967],[3,8936,15,9421]]},{"price":45,"points":[[3,7368,19,8127]]},{"price":50,"points":[]}]};
+
+/* ---------- formatting (pt-BR) ---------- */
+const NBSP = " ";
+const MINUS = "−";
+const fmtInt = (n) => n.toLocaleString("pt-BR");
+const fmtDec = (n, d = 2) =>
+  n.toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const brl = (v, d = 2) =>
+  (v < 0 ? MINUS : "") + "R$" + NBSP + fmtDec(Math.abs(v), d);
+function compact(n) {
+  if (n >= 1e6) {
+    const m = n / 1e6;
+    return fmtDec(m, m >= 100 || Number.isInteger(m) ? 0 : 1) + NBSP + "mi";
+  }
+  if (n >= 1e3) {
+    const m = n / 1e3;
+    return fmtDec(m, m >= 100 || Number.isInteger(m) ? 0 : 1) + NBSP + "mil";
+  }
+  return fmtDec(n, n < 10 && !Number.isInteger(n) ? 1 : 0);
+}
+function pctShare(count, total) {
+  const p = (count / total) * 100;
+  if (p >= 0.01) return fmtDec(p, p >= 10 ? 1 : 2) + "%";
+  return "1 em " + compact(Math.round(total / count));
+}
+
+/* ---------- derived stats ---------- */
+const TOTAL = DATA.dist.reduce((s, r) => s + r.count, 0);
+const TOTAL_PRIZE = DATA.dist.reduce((s, r) => s + r.count * r.prize, 0);
+const MEAN = TOTAL_PRIZE / TOTAL;
+const MEAN_ROUNDS = DATA.dist.reduce((s, r) => s + r.count * r.rounds, 0) / TOTAL;
+const MAXROW = DATA.dist[DATA.dist.length - 1];
+const SHARE_LE4 = DATA.dist.filter((r) => r.rounds <= 3).reduce((s, r) => s + r.count, 0) / TOTAL;
+const RUN_MEANS = DATA.runs.map((r) => r.totalPrize / r.games);
+const RUN_MIN = Math.min(...RUN_MEANS);
+const RUN_MAX = Math.max(...RUN_MEANS);
+
+/* exit-point stats — points are [run, jogada, rodadas, lucro] */
+const median = (a) => {
+  const s = [...a].sort((x, y) => x - y);
+  return s.length ? (s.length % 2 ? s[(s.length - 1) / 2] : (s[s.length / 2 - 1] + s[s.length / 2]) / 2) : null;
+};
+const EX_STATS = DATA.exits.map((e) => {
+  const firsts = {};
+  for (const [run, jog] of e.points) firsts[run] = Math.min(firsts[run] ?? Infinity, jog);
+  const lucros = e.points.map((p) => p[3]);
+  return {
+    price: e.price,
+    n: e.points.length,
+    runsWith: Object.keys(firsts).length,
+    firstMedian: median(Object.values(firsts)),
+    firstMax: Object.keys(firsts).length ? Math.max(...Object.values(firsts)) : null,
+    lucroMedian: median(lucros),
+    lucroMean: lucros.length ? lucros.reduce((s, v) => s + v, 0) / lucros.length : null,
+    lucroMax: lucros.length ? Math.max(...lucros) : null,
+  };
+});
+
+/* ---------- hero + KPIs + captions ---------- */
+const compactBRL = (v) => {
+  const a = Math.abs(v), s = v < 0 ? MINUS : "";
+  if (a >= 1e9) return s + "R$" + NBSP + fmtDec(a / 1e9, 2) + NBSP + "bi";
+  if (a >= 1e6) return s + "R$" + NBSP + fmtDec(a / 1e6, 1) + NBSP + "mi";
+  return brl(v);
+};
+
+document.getElementById("hero-mean").textContent = brl(MEAN);
+document.getElementById("hero-mean-note").textContent =
+  "em " + fmtInt(TOTAL) + " jogadas — as execuções individuais fecharam entre " +
+  brl(RUN_MIN) + " e " + brl(RUN_MAX);
+
+const KPIS = [
+  { v: compact(TOTAL), l: "Jogadas simuladas", n: "5 execuções × 100 mi de jogadas" },
+  { v: compactBRL(MAXROW.prize), l: "Maior prêmio", n: brl(MAXROW.prize, 0) + " — " + (MAXROW.rounds - 1) + " caras seguidas, 1 vez em 500 mi" },
+  { v: fmtDec(SHARE_LE4 * 100, 1) + "%", l: "Jogadas que pagam até R$ 4", n: "encerradas nas 3 primeiras rodadas" },
+  { v: fmtDec(MEAN_ROUNDS, 2), l: "Rodadas por jogada, em média", n: "exatamente como prevê a teoria: E = 2" },
+];
+{
+  const kwrap = document.getElementById("kpis");
+  for (const k of KPIS) {
+    const card = elh("div", "card kpi", kwrap);
+    elh("p", "tile-label", card).textContent = k.l;
+    elh("p", "value", card).textContent = k.v;
+    elh("p", "tile-note", card).textContent = k.n;
+  }
+}
+
+document.getElementById("cap-dist").textContent =
+  "A jogada mais longa durou " + MAXROW.rounds + " rodadas — " + (MAXROW.rounds - 1) +
+  " caras seguidas — e pagou " + brl(MAXROW.prize, 0) + ", uma vez em 500 milhões. " +
+  "É nesses prêmios quase impossíveis que mora o valor esperado infinito.";
+{
+  const top = DATA.runs.reduce((a, b) => (b.totalPrize > a.totalPrize ? b : a));
+  const topIdx = DATA.runs.indexOf(top) + 1;
+  const meanWith = top.totalPrize / top.games;
+  const meanWithout = (top.totalPrize - top.maxPrize) / (top.games - 1);
+  document.getElementById("cap-runs").textContent =
+    "O maior prêmio de cada execução praticamente dita a sua média: sozinha, a jogada de " +
+    compactBRL(top.maxPrize) + " responde por " + brl(top.maxPrize / top.games) +
+    " da média da execução " + topIdx + " — sem essa única jogada em 100 milhões, ela cairia de " +
+    brl(meanWith) + " para " + brl(meanWithout) + ". As duas execuções com média acima de R$ 16 " +
+    "são exatamente as que viram os dois maiores prêmios das 500 milhões de jogadas.";
+}
+document.getElementById("cap-entry").textContent =
+  "A R$ 5 por jogada, o retorno médio de " + brl(DATA.entries[0].acc / TOTAL) +
+  " por jogada quase triplica o investimento. A R$ 50, o saldo acumulado nunca ficou positivo — " +
+  "nem por um instante, em nenhuma das cinco execuções. O tamanho da banca decide o que a média promete.";
+{
+  const at = (p) => EX_STATS.find((s) => s.price === p);
+  const s5 = at(5), s15 = at(15), s40 = at(40), s45 = at(45);
+  const allPts = DATA.exits.flatMap((e) => e.points.map((p) => p[3]));
+  const gmax = Math.max(...allPts);
+  document.getElementById("cap-exits").textContent =
+    "A R$ 5, a primeira chance de sair no lucro chega tipicamente na jogada " + fmtInt(s5.firstMedian) +
+    " (mediana das 5 execuções) e paga pouco — lucro mediano de " + brl(s5.lucroMedian, 0) +
+    ". A R$ 15, a espera mediana já passa de " + compact(s15.firstMedian) + " jogadas (numa execução, " +
+    fmtInt(s15.firstMax) + ") e o lucro mediano ao sair é " + compactBRL(s15.lucroMedian) +
+    " — mas a média salta para " + compactBRL(s15.lucroMean) + ", inflada por uma única saída de " +
+    compactBRL(gmax) + ". De R$ 40 em diante quase não há porta: " + s40.n + " chances a R$ 40, " +
+    s45.n + " a R$ 45 e nenhuma a R$ 50. Parar no lucro não muda o valor esperado do jogo — " +
+    "só escolhe o momento de encerrar a história.";
+}
+
+document.getElementById("prov").innerHTML =
+  "<strong>Fontes.</strong> Todos os números vêm dos 5 arquivos de 100 milhões de jogadas gerados por " +
+  "<code>stop_on_win.py</code> em 5 de julho de 2026, na pasta <code>resultados/</code> do repositório: " +
+  "<code>simulacao_100.000.000_jogadas-20260705_{125547, 125812, 125827, 125835, 125838}.txt</code>. " +
+  "A distribuição de rodadas, o prêmio médio e os saldos por preço de entrada somam as cinco execuções " +
+  "(500 milhões de jogadas); o gráfico de execuções mostra cada arquivo individualmente — a tabela dele " +
+  "traz o nome de cada arquivo para conferência. " +
+  "Prêmio de uma jogada encerrada na rodada k: R$ 2<sup>k−1</sup>, com probabilidade 1/2<sup>k</sup>.";
+
+/* ---------- tiny DOM/SVG helpers ---------- */
+function elh(tag, cls, parent) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (parent) parent.appendChild(n);
+  return n;
+}
+const SVGNS = "http://www.w3.org/2000/svg";
+function els(tag, attrs, parent) {
+  const n = document.createElementNS(SVGNS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+const log10 = Math.log10;
+const log2 = Math.log2;
+
+/* rounded data-end bar, square at the baseline */
+function barPath(x, w, yBase, yEnd) {
+  const up = yEnd < yBase;
+  const h = Math.abs(yBase - yEnd);
+  const r = Math.min(4, w / 2, h);
+  if (h < 1) {
+    const y = up ? yBase - h : yBase;
+    return `M${x},${y} h${w} v${h} h${-w} Z`;
+  }
+  if (up) {
+    return `M${x},${yBase} V${yEnd + r} Q${x},${yEnd} ${x + r},${yEnd} H${x + w - r} ` +
+      `Q${x + w},${yEnd} ${x + w},${yEnd + r} V${yBase} Z`;
+  }
+  return `M${x},${yBase} V${yEnd - r} Q${x},${yEnd} ${x + r},${yEnd} H${x + w - r} ` +
+    `Q${x + w},${yEnd} ${x + w},${yEnd - r} V${yBase} Z`;
+}
+
+/* ---------- tooltip machinery (shared) ---------- */
+function makeTip(wrap) {
+  const tip = wrap.querySelector(".tip");
+  return {
+    show(px, py, build) {
+      tip.textContent = "";
+      build(tip);
+      tip.hidden = false;
+      const W = wrap.clientWidth, tw = tip.offsetWidth, th = tip.offsetHeight;
+      let x = px + 14;
+      if (x + tw > W - 6) x = px - tw - 14;
+      x = Math.max(6, Math.min(x, W - tw - 6));
+      let y = py - th - 12;
+      if (y < 4) y = py + 16;
+      tip.style.left = x + "px";
+      tip.style.top = y + "px";
+    },
+    hide() { tip.hidden = true; },
+  };
+}
+function tipTitle(tip, text) {
+  elh("p", "tip-title", tip).textContent = text;
+}
+function tipRow(tip, label, value, key) {
+  const row = elh("div", "row", tip);
+  if (key) elh("span", "lk " + key, row);
+  elh("span", "lbl", row).textContent = label;
+  elh("span", "val", row).textContent = value;
+}
+
+/* wires pointer + keyboard snapping over a plot; idx = nearest data column
+   (state.vertical = true snaps along y — used by the row dot plot) */
+function wireSnapping(wrap, state) {
+  wrap.addEventListener("pointermove", (e) => {
+    if (wrap.querySelector(".plot").hidden) return;
+    const box = wrap.querySelector("svg").getBoundingClientRect();
+    let best = 0, bd = Infinity;
+    if (state.pts2d) {
+      /* nearest-point layer for scatter: the pointer only has to be closest */
+      const px = e.clientX - box.left, py = e.clientY - box.top;
+      state.pts2d().forEach(([x, y], i) => {
+        const d = (x - px) * (x - px) + (y - py) * (y - py);
+        if (d < bd) { bd = d; best = i; }
+      });
+    } else {
+      const p = state.vertical ? e.clientY - box.top : e.clientX - box.left;
+      state.xs().forEach((x, i) => {
+        const d = Math.abs(x - p);
+        if (d < bd) { bd = d; best = i; }
+      });
+    }
+    state.focus(best);
+  });
+  wrap.addEventListener("pointerleave", () => state.blur());
+  wrap.addEventListener("keydown", (e) => {
+    const n = state.xs().length;
+    let i = state.idx == null ? n - 1 : state.idx;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") i = Math.min(n - 1, i + 1);
+    else if (e.key === "ArrowLeft" || e.key === "ArrowUp") i = Math.max(0, i - 1);
+    else if (e.key === "Home") i = 0;
+    else if (e.key === "End") i = n - 1;
+    else if (e.key === "Escape") { state.blur(); return; }
+    else return;
+    e.preventDefault();
+    state.focus(i);
+  });
+  wrap.addEventListener("blur", () => state.blur());
+}
+
+/* ---------- chart 1: distribution (log-y dot plot + theory line) ---------- */
+function renderDist(plot, wrap) {
+  plot.textContent = "";
+  const W = Math.max(300, plot.clientWidth);
+  const M = { t: 30, r: 26, b: 46, l: W < 560 ? 46 : 60 };
+  const H = 330;
+  const pw = W - M.l - M.r, ph = H - M.t - M.b;
+  const svg = els("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H }, plot);
+
+  const kMax = MAXROW.rounds;
+  const x = (k) => M.l + ((k - 1) / (kMax - 1)) * pw;
+  const yMinV = 0.5, yMaxV = 6e8;
+  const y = (v) => M.t + ph - ((log10(v) - log10(yMinV)) / (log10(yMaxV) - log10(yMinV))) * ph;
+
+  for (const t of [1, 100, 1e4, 1e6, 1e8]) {
+    els("line", { x1: M.l, x2: M.l + pw, y1: y(t), y2: y(t), class: "gridline" }, svg);
+    els("text", { x: M.l - 8, y: y(t) + 3.5, "text-anchor": "end", class: "ticklab" }, svg)
+      .textContent = compact(t);
+  }
+  const kTicks = W < 560 ? [1, 10, 20, 30] : [1, 5, 10, 15, 20, 25, 30];
+  for (const k of kTicks) {
+    els("text", { x: x(k), y: M.t + ph + 18, "text-anchor": "middle", class: "ticklab" }, svg)
+      .textContent = k;
+  }
+  els("line", { x1: M.l, x2: M.l + pw, y1: M.t + ph, y2: M.t + ph, class: "axisline" }, svg);
+  els("text", { x: M.l, y: M.t - 12, class: "axistitle" }, svg).textContent = "jogadas encerradas";
+  els("text", { x: M.l + pw, y: M.t + ph + 36, "text-anchor": "end", class: "axistitle" }, svg)
+    .textContent = "rodadas até sair coroa";
+
+  const clip = els("clipPath", { id: "clip-dist" }, svg);
+  els("rect", { x: M.l, y: M.t, width: pw, height: ph }, clip);
+
+  let d = "";
+  for (let k = 1; k <= kMax; k++) {
+    const th = TOTAL / 2 ** k;
+    d += (k === 1 ? "M" : "L") + x(k) + "," + y(Math.max(th, yMinV * 0.9)) + " ";
+  }
+  els("path", { d, class: "theo-line", "clip-path": "url(#clip-dist)" }, svg);
+
+  const dots = [];
+  for (const r of DATA.dist) {
+    dots.push(els("circle", { cx: x(r.rounds), cy: y(r.count), r: 4, class: "marker" }, svg));
+  }
+
+  /* label only the head extreme — the tail's corridor is full of marks; the
+     caption and tooltip carry the 30-round story */
+  const first = DATA.dist[0];
+  els("text", { x: x(1) + 10, y: y(first.count) + 4, class: "dlab" }, svg)
+    .textContent = compact(first.count) + " de jogadas";
+
+  const cross = els("line", { y1: M.t, y2: M.t + ph, class: "crosshair", visibility: "hidden" }, svg);
+  els("rect", { x: M.l, y: M.t, width: pw, height: ph, class: "hitzone" }, svg);
+
+  const tip = makeTip(wrap);
+  const st = wrap._state;
+  st.xs = () => DATA.dist.map((r) => x(r.rounds));
+  st.focus = (i) => {
+    st.idx = i;
+    const r = DATA.dist[i];
+    cross.setAttribute("x1", x(r.rounds));
+    cross.setAttribute("x2", x(r.rounds));
+    cross.setAttribute("visibility", "visible");
+    dots.forEach((c, j) => c.setAttribute("r", j === i ? 5.5 : 4));
+    tip.show(x(r.rounds), y(r.count), (t) => {
+      tipTitle(t, "Rodada " + r.rounds + " · prêmio " + brl(r.prize, 0));
+      tipRow(t, "observado", fmtInt(r.count), "lk-blue");
+      tipRow(t, "teórico n/2ᵏ", fmtInt(Math.round(TOTAL / 2 ** r.rounds)));
+      tipRow(t, "parcela", pctShare(r.count, TOTAL));
+    });
+  };
+  st.blur = () => {
+    st.idx = null;
+    cross.setAttribute("visibility", "hidden");
+    dots.forEach((c) => c.setAttribute("r", 4));
+    tip.hide();
+  };
+}
+
+/* ---------- chart 2: mean per execution (dot plot, one row per file) ---------- */
+function renderRuns(plot, wrap) {
+  plot.textContent = "";
+  const W = Math.max(300, plot.clientWidth);
+  const narrow = W < 560;
+  const M = { t: 30, r: 16, b: 44, l: narrow ? 86 : 104 };
+  const rowH = 48;
+  const runs = DATA.runs.map((r) => ({ ...r, mean: r.totalPrize / r.games }));
+  const ph = rowH * runs.length;
+  const H = M.t + ph + M.b;
+  const pw = W - M.l - M.r;
+  const svg = els("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H }, plot);
+
+  const xMin = 12, xMax = 18;
+  const x = (v) => M.l + ((v - xMin) / (xMax - xMin)) * pw;
+  const yc = (i) => M.t + i * rowH + rowH / 2;
+
+  for (let t = xMin; t <= xMax; t++) {
+    els("line", { x1: x(t), x2: x(t), y1: M.t, y2: M.t + ph, class: "gridline" }, svg);
+    els("text", { x: x(t), y: M.t + ph + 18, "text-anchor": "middle", class: "ticklab" }, svg)
+      .textContent = t;
+  }
+  els("line", { x1: M.l, x2: M.l + pw, y1: M.t + ph, y2: M.t + ph, class: "axisline" }, svg);
+  els("text", { x: M.l + pw, y: M.t + ph + 36, "text-anchor": "end", class: "axistitle" }, svg)
+    .textContent = "prêmio médio após 100 mi de jogadas (R$)";
+
+  /* combined-mean reference */
+  const bx = x(MEAN);
+  els("line", { x1: bx, x2: bx, y1: M.t - 4, y2: M.t + ph, class: "refline" }, svg);
+  const beFits = bx + 150 < M.l + pw;
+  els("text", {
+    x: beFits ? bx + 6 : bx - 6, y: M.t - 10,
+    "text-anchor": beFits ? "start" : "end", class: "dlab",
+  }, svg).textContent = "média das 5: " + brl(MEAN);
+
+  const dots = [];
+  runs.forEach((r, i) => {
+    const cy = yc(i);
+    els("line", { x1: M.l, x2: M.l + pw, y1: cy, y2: cy, class: "gridline" }, svg);
+    els("text", { x: M.l - 12, y: cy + 4, "text-anchor": "end", class: "dlab" }, svg)
+      .textContent = "Execução " + (i + 1);
+    const cx = x(r.mean);
+    const labelLeft = cx > M.l + pw - 76;
+    const lx = labelLeft ? cx - 12 : cx + 12;
+    const anchor = labelLeft ? "end" : "start";
+    els("text", { x: lx, y: cy - (narrow ? -4 : 2), "text-anchor": anchor, class: "dlab" }, svg)
+      .textContent = brl(r.mean);
+    if (!narrow) {
+      els("text", { x: lx, y: cy + 13, "text-anchor": anchor, class: "dlab-soft" }, svg)
+        .textContent = "maior prêmio: " + compactBRL(r.maxPrize);
+    }
+    dots.push(els("circle", { cx, cy, r: 5, class: "marker" }, svg));
+  });
+
+  const tip = makeTip(wrap);
+  const st = wrap._state;
+  st.vertical = true;
+  st.xs = () => runs.map((_, i) => yc(i));
+  st.focus = (i) => {
+    st.idx = i;
+    const r = runs[i];
+    dots.forEach((d, j) => d.setAttribute("r", j === i ? 6.5 : 5));
+    tip.show(x(r.mean), yc(i), (t) => {
+      tipTitle(t, "Execução " + (i + 1) + " — " + r.file);
+      tipRow(t, "prêmio médio", brl(r.mean), "lk-blue");
+      tipRow(t, "prêmio total pago", compactBRL(r.totalPrize));
+      tipRow(t, "maior prêmio", compactBRL(r.maxPrize));
+      tipRow(t, "jogada mais longa", r.maxRounds + " rodadas");
+      tipRow(t, "jogadas", fmtInt(r.games));
+    });
+  };
+  st.blur = () => {
+    st.idx = null;
+    dots.forEach((d) => d.setAttribute("r", 5));
+    tip.hide();
+  };
+}
+
+/* ---------- chart 3: entry-price diverging bars ---------- */
+function renderEntry(plot, wrap) {
+  plot.textContent = "";
+  const W = Math.max(300, plot.clientWidth);
+  const M = { t: 34, r: 20, b: 46, l: W < 560 ? 44 : 56 };
+  const H = 330;
+  const pw = W - M.l - M.r, ph = H - M.t - M.b;
+  const svg = els("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H }, plot);
+
+  const entries = DATA.entries.map((e) => ({ ...e, perGame: e.acc / TOTAL }));
+  const prices = entries.map((e) => e.price);
+  const band = pw / prices.length;
+  const bw = Math.min(24, band * 0.6);
+  const xc = (p) => M.l + ((p - prices[0]) / 5) * band + band / 2; // prices step by 5
+  const yMin = -40, yMax = 14;
+  const y = (v) => M.t + ((yMax - v) / (yMax - yMin)) * ph;
+
+  for (const t of [10, 0, -10, -20, -30, -40]) {
+    els("line", { x1: M.l, x2: M.l + pw, y1: y(t), y2: y(t), class: t === 0 ? "axisline" : "gridline" }, svg);
+    els("text", { x: M.l - 8, y: y(t) + 3.5, "text-anchor": "end", class: "ticklab" }, svg)
+      .textContent = (t < 0 ? MINUS : "") + Math.abs(t);
+  }
+  for (const p of prices) {
+    els("text", { x: xc(p), y: M.t + ph + 18, "text-anchor": "middle", class: "ticklab" }, svg)
+      .textContent = p;
+  }
+  els("text", { x: M.l, y: M.t - 16, class: "axistitle" }, svg)
+    .textContent = "resultado médio por jogada (R$)";
+  els("text", { x: M.l + pw, y: M.t + ph + 36, "text-anchor": "end", class: "axistitle" }, svg)
+    .textContent = "preço de entrada (R$)";
+
+  /* break-even reference — label inside the plot, clear of the y-axis title */
+  const bx = xc(MEAN);
+  els("line", { x1: bx, x2: bx, y1: M.t, y2: y(0), class: "refline" }, svg);
+  els("text", { x: bx + 6, y: M.t + 10, class: "dlab" }, svg)
+    .textContent = "equilíbrio: " + brl(MEAN);
+
+  const bars = [];
+  const tip = makeTip(wrap);
+  for (const e of entries) {
+    const g = els("g", {}, svg);
+    const cls = e.perGame >= 0 ? "bar-pos" : "bar-neg";
+    els("path", {
+      d: barPath(xc(e.price) - bw / 2, bw, y(0), y(e.perGame)),
+      class: "barfill " + cls,
+    }, g);
+    els("rect", { x: xc(e.price) - band / 2, y: M.t, width: band, height: ph, class: "hitzone" }, g);
+    bars.push(g);
+  }
+
+  const lab5 = entries[0], lab15 = entries[2], lab50 = entries[entries.length - 1];
+  els("text", { x: xc(lab5.price), y: y(lab5.perGame) - 8, "text-anchor": "middle", class: "dlab" }, svg)
+    .textContent = "+" + brl(lab5.perGame);
+  els("text", { x: xc(lab15.price), y: y(lab15.perGame) + 16, "text-anchor": "middle", class: "dlab" }, svg)
+    .textContent = brl(lab15.perGame);
+  els("text", { x: xc(lab50.price), y: y(lab50.perGame) + 16, "text-anchor": "middle", class: "dlab" }, svg)
+    .textContent = brl(lab50.perGame);
+
+  const st = wrap._state;
+  st.xs = () => entries.map((e) => xc(e.price));
+  st.focus = (i) => {
+    st.idx = i;
+    bars.forEach((b, j) => b.classList.toggle("hot", j === i));
+    const e = entries[i];
+    tip.show(xc(e.price), y(Math.max(e.perGame, 0)), (t) => {
+      tipTitle(t, "Entrada de " + brl(e.price, 0) + " por jogada");
+      tipRow(t, "resultado por jogada", brl(e.perGame), e.perGame >= 0 ? "lk-blue" : "lk-red");
+      tipRow(t, "saldo após 500 mi", compactBRL(e.acc));
+      tipRow(t, "saldo virou positivo", e.positivo + "× nas 5 execuções");
+    });
+  };
+  st.blur = () => {
+    st.idx = null;
+    bars.forEach((b) => b.classList.remove("hot"));
+    tip.hide();
+  };
+}
+
+/* ---------- chart 4: profit-exit moments (strip plot, log-x) ---------- */
+function renderExits(plot, wrap) {
+  plot.textContent = "";
+  const W = Math.max(300, plot.clientWidth);
+  const narrow = W < 560;
+  const M = { t: 26, r: 16, b: 46, l: narrow ? 50 : 62 };
+  const rowH = 36;
+  const prices = DATA.exits.map((e) => e.price);
+  const ph = rowH * prices.length;
+  const H = M.t + ph + M.b;
+  const pw = W - M.l - M.r;
+  const svg = els("svg", { viewBox: `0 0 ${W} ${H}`, width: W, height: H }, plot);
+
+  const xMin = 0.8, xMax = 1.2e8;
+  const x = (n) => M.l + ((log10(n) - log10(xMin)) / (log10(xMax) - log10(xMin))) * pw;
+  const yc = (ri) => M.t + ri * rowH + rowH / 2;
+
+  const decades = narrow ? [1, 100, 1e4, 1e6, 1e8] : [1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8];
+  for (const n of decades) {
+    els("line", { x1: x(n), x2: x(n), y1: M.t, y2: M.t + ph, class: "gridline" }, svg);
+    els("text", { x: x(n), y: M.t + ph + 18, "text-anchor": "middle", class: "ticklab" }, svg)
+      .textContent = compact(n);
+  }
+  els("line", { x1: M.l, x2: M.l + pw, y1: M.t + ph, y2: M.t + ph, class: "axisline" }, svg);
+  els("text", { x: M.l + pw, y: M.t + ph + 36, "text-anchor": "end", class: "axistitle" }, svg)
+    .textContent = "jogada em que o saldo virou positivo (escala log)";
+
+  prices.forEach((p, ri) => {
+    const cy = yc(ri);
+    els("line", { x1: M.l, x2: M.l + pw, y1: cy, y2: cy, class: "gridline" }, svg);
+    els("text", { x: M.l - 10, y: cy + 4, "text-anchor": "end", class: "dlab" }, svg)
+      .textContent = "R$ " + p;
+  });
+
+  /* flat point list, row-major, with deterministic vertical jitter */
+  const FLAT = [];
+  DATA.exits.forEach((e, ri) => {
+    const pts = [...e.points].sort((a, b) => a[1] - b[1]);
+    pts.forEach(([run, jog, rod, luc], i) => {
+      const jitter = (((i * 2654435761) >>> 16) % 17 - 8);
+      FLAT.push({ price: e.price, run, jog, rod, luc, cx: x(jog), cy: yc(ri) + jitter });
+    });
+  });
+  const dots = FLAT.map((p) => els("circle", { cx: p.cx, cy: p.cy, r: 4, class: "marker" }, svg));
+
+  /* selective labels: the single R$ 45 chance, the empty R$ 50 row, the biggest exit profit */
+  const lone = FLAT.filter((p) => p.price === 45);
+  if (lone.length === 1) {
+    els("text", { x: lone[0].cx + 10, y: lone[0].cy + 4, class: "dlab-soft" }, svg)
+      .textContent = "1 chance em 500 mi · lucro " + brl(lone[0].luc, 0);
+  }
+  prices.forEach((p, ri) => {
+    if (!DATA.exits[ri].points.length) {
+      els("text", { x: M.l + 10, y: yc(ri) + 4, class: "dlab-soft" }, svg)
+        .textContent = "nenhuma saída em 500 milhões de jogadas";
+    }
+  });
+  const tip = makeTip(wrap);
+  const st = wrap._state;
+  st.pts2d = () => FLAT.map((p) => [p.cx, p.cy]);
+  st.xs = () => FLAT.map((p) => p.cx);
+  st.focus = (i) => {
+    st.idx = i;
+    const p = FLAT[i];
+    dots.forEach((d, j) => d.setAttribute("r", j === i ? 6 : 4));
+    tip.show(p.cx, p.cy, (t) => {
+      tipTitle(t, "Entrada de R$ " + p.price + " — execução " + p.run);
+      tipRow(t, "saiu no lucro na jogada", fmtInt(p.jog), "lk-blue");
+      tipRow(t, "lucro naquele momento", brl(p.luc, 0));
+      tipRow(t, "jogada que virou o saldo", p.rod + " rodadas · " + compactBRL(2 ** (p.rod - 1)));
+    });
+  };
+  st.blur = () => {
+    st.idx = null;
+    dots.forEach((d) => d.setAttribute("r", 4));
+    tip.hide();
+  };
+}
+
+/* ---------- table views ---------- */
+function buildTable(wrap, head, rows, leftCols = 1) {
+  const t = elh("table", "", wrap);
+  const tr = elh("tr", "", elh("thead", "", t));
+  head.forEach((h, i) => (elh("th", i < leftCols ? "tl" : "", tr).textContent = h));
+  const tb = elh("tbody", "", t);
+  rows.forEach((r) => {
+    const tr2 = elh("tr", "", tb);
+    r.forEach((c, i) => (elh("td", i < leftCols ? "tl" : "", tr2).textContent = c));
+  });
+}
+buildTable(
+  document.querySelector("#card-dist .tablewrap"),
+  ["Rodadas", "Prêmio", "Jogadas", "% das jogadas", "Teórico n/2ᵏ"],
+  DATA.dist.map((r) => [
+    r.rounds, brl(r.prize, 0), fmtInt(r.count), pctShare(r.count, TOTAL),
+    fmtInt(Math.round(TOTAL / 2 ** r.rounds)),
+  ])
+);
+buildTable(
+  document.querySelector("#card-runs .tablewrap"),
+  ["Execução", "Arquivo em resultados/", "Jogadas", "Prêmio médio", "Maior prêmio", "Jogada mais longa", "Caras", "Coroas"],
+  DATA.runs.map((r, i) => [
+    String(i + 1), r.file, fmtInt(r.games), brl(r.totalPrize / r.games),
+    brl(r.maxPrize, 0), r.maxRounds + " rodadas", fmtInt(r.heads), fmtInt(r.tails),
+  ]),
+  2
+);
+buildTable(
+  document.querySelector("#card-entry .tablewrap"),
+  ["Preço de entrada", "Resultado médio por jogada", "Saldo após 500 mi de jogadas", "Saldo virou positivo"],
+  DATA.entries.map((e) => [
+    brl(e.price, 0), brl(e.acc / TOTAL), brl(e.acc, 0), e.positivo + "×",
+  ])
+);
+buildTable(
+  document.querySelector("#card-exits .tablewrap"),
+  ["Preço de entrada", "Saídas com lucro", "Execuções com saída", "1ª saída (mediana)", "Lucro mediano ao sair", "Lucro médio ao sair", "Maior lucro"],
+  EX_STATS.map((s) => [
+    brl(s.price, 0),
+    s.n + "×",
+    s.runsWith + " de 5",
+    s.n ? "jogada " + fmtInt(Math.round(s.firstMedian)) : "—",
+    s.n ? brl(s.lucroMedian, s.lucroMedian % 1 ? 2 : 0) : "—",
+    s.n ? brl(s.lucroMean, 0) : "—",
+    s.n ? brl(s.lucroMax, 0) : "—",
+  ])
+);
+
+/* ---------- wire cards ---------- */
+const RENDERERS = { "card-dist": renderDist, "card-runs": renderRuns, "card-entry": renderEntry, "card-exits": renderExits };
+for (const id in RENDERERS) {
+  const card = document.getElementById(id);
+  const wrap = card.querySelector(".plot-wrap");
+  const plot = card.querySelector(".plot");
+  wrap._state = { idx: null, xs: () => [], focus: () => {}, blur: () => {} };
+  wireSnapping(wrap, wrap._state);
+
+  const btn = card.querySelector(".toggle");
+  const legend = card.querySelector(".legend");
+  const twrap = card.querySelector(".tablewrap");
+  btn.addEventListener("click", () => {
+    const showTable = twrap.hidden;
+    twrap.hidden = !showTable;
+    wrap.hidden = showTable;
+    if (legend) legend.style.visibility = showTable ? "hidden" : "visible";
+    btn.textContent = showTable ? "Ver gráfico" : "Ver tabela";
+    btn.setAttribute("aria-pressed", String(showTable));
+  });
+
+  let raf = null;
+  const ro = new ResizeObserver(() => {
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      if (!wrap.hidden) RENDERERS[id](plot, wrap);
+    });
+  });
+  ro.observe(plot);
+  RENDERERS[id](plot, wrap);
+}
+</script>
+
+</body>
+</html>

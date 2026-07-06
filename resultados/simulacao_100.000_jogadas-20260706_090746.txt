@@ -1,0 +1,61 @@
+
+==================================================
+RESULTADO FINAL DA SIMULAÇÃO
+==================================================
+Jogadas simuladas ........: 100.000
+Prêmio médio .............: R$ 8,10
+Maior prêmio .............: R$ 65.536
+Menor prêmio .............: R$ 1
+Média de rodadas/jogada ..: 2,00
+Total de caras ...........: 100.143
+Total de coroas ..........: 100.000
+==================================================
+==================================================
+DISTRIBUIÇÃO DE RODADAS POR JOGADA
+    1 rodada(s) : 49.959 vez(s) || Prêmio: R$ 1
+    2 rodada(s) : 25.002 vez(s) || Prêmio: R$ 2
+    3 rodada(s) : 12.529 vez(s) || Prêmio: R$ 4
+    4 rodada(s) :  6.236 vez(s) || Prêmio: R$ 8
+    5 rodada(s) :  3.151 vez(s) || Prêmio: R$ 16
+    6 rodada(s) :  1.536 vez(s) || Prêmio: R$ 32
+    7 rodada(s) :    791 vez(s) || Prêmio: R$ 64
+    8 rodada(s) :    387 vez(s) || Prêmio: R$ 128
+    9 rodada(s) :    217 vez(s) || Prêmio: R$ 256
+   10 rodada(s) :     99 vez(s) || Prêmio: R$ 512
+   11 rodada(s) :     51 vez(s) || Prêmio: R$ 1.024
+   12 rodada(s) :     21 vez(s) || Prêmio: R$ 2.048
+   13 rodada(s) :     11 vez(s) || Prêmio: R$ 4.096
+   14 rodada(s) :      6 vez(s) || Prêmio: R$ 8.192
+   15 rodada(s) :      3 vez(s) || Prêmio: R$ 16.384
+   17 rodada(s) :      1 vez(s) || Prêmio: R$ 65.536
+==================================================
+RESULTADO POR PREÇO DE ENTRADA
+Resultado Acc = Resultado acumulado após jogar todas as 100.000 vezes
+Chances de saída => Em quantas jogadas saiu com lucro
+  Entrada R$   5 ..: resultado acumulado R$   310.063,00 (LUCRO) || ficou positivo 4x
+  Entrada R$  10 ..: resultado acumulado R$  -189.937,00 (PREJUÍZO) || ficou positivo 2x
+  Entrada R$  15 ..: resultado acumulado R$  -689.937,00 (PREJUÍZO) || ficou positivo 1x
+  Entrada R$  20 ..: resultado acumulado R$ -1.189.937,00 (PREJUÍZO) || ficou positivo 0x
+  Entrada R$  25 ..: resultado acumulado R$ -1.689.937,00 (PREJUÍZO) || ficou positivo 0x
+  Entrada R$  30 ..: resultado acumulado R$ -2.189.937,00 (PREJUÍZO) || ficou positivo 0x
+  Entrada R$  35 ..: resultado acumulado R$ -2.689.937,00 (PREJUÍZO) || ficou positivo 0x
+  Entrada R$  40 ..: resultado acumulado R$ -3.189.937,00 (PREJUÍZO) || ficou positivo 0x
+  Entrada R$  45 ..: resultado acumulado R$ -3.689.937,00 (PREJUÍZO) || ficou positivo 0x
+  Entrada R$  50 ..: resultado acumulado R$ -4.189.937,00 (PREJUÍZO) || ficou positivo 0x
+==================================================
+
+
+==================================================
+  Entrada R$  5,00 parou com lucro em nos seguintes pontos:
+Jogada: 145 | Rodadas: 9 | Lucro: R$ 32
+Jogada: 201 | Rodadas: 9 | Lucro: R$ 173
+Jogada: 374 | Rodadas: 8 | Lucro: R$ 113
+Jogada: 693 | Rodadas: 8 | Lucro: R$ 67
+==================================================
+  Entrada R$ 10,00 parou com lucro em nos seguintes pontos:
+Jogada: 9080 | Rodadas: 17 | Lucro: R$ 51.994
+Jogada: 21481 | Rodadas: 14 | Lucro: R$ 4.545
+==================================================
+  Entrada R$ 15,00 parou com lucro em nos seguintes pontos:
+Jogada: 9080 | Rodadas: 17 | Lucro: R$ 6.594
+==================================================
