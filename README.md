@@ -75,7 +75,7 @@ python3 stop_on_win.py 100000000   # ~minutos, dependendo da máquina
 
 Cada execução de `stop_on_win.py` grava um novo arquivo em [`resultados/`](resultados/).
 
-**Dashboard**: abra [`paradoxo-sao-petersburgo.html`](paradoxo-sao-petersburgo.html)
+**Dashboard**: abra [`main.html`](main.html)
 diretamente no navegador (duplo clique). É um arquivo autocontido — os dados das
 5 execuções de 100 milhões estão embutidos nele — com modo claro/escuro, tooltips
 em todos os gráficos e um botão "Ver tabela" em cada card com os dados completos.
